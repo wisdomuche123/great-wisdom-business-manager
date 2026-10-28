@@ -330,6 +330,73 @@ app.use((error, req, res, next) => {
   res.status(500).json({ error: "Internal server error." });
 });
 
+app.get("/api/setup-database", async (req, res) => {
+  if (
+    !process.env.SETUP_TOKEN ||
+    req.query.token !== process.env.SETUP_TOKEN
+  ) {
+    return res.status(404).json({ error: "Not found" });
+  }
+
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS customers (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(120) NOT NULL,
+        phone VARCHAR(30),
+        email VARCHAR(150),
+        address VARCHAR(255),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS products (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(150) NOT NULL,
+        sku VARCHAR(60) UNIQUE,
+        quantity INT NOT NULL DEFAULT 0,
+        price DECIMAL(12,2) NOT NULL DEFAULT 0.00,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS sales (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        customer_id INT NULL,
+        total DECIMAL(12,2) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (customer_id)
+          REFERENCES customers(id)
+          ON DELETE SET NULL
+      )
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS sale_items (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        sale_id INT NOT NULL,
+        product_id INT NULL,
+        quantity INT NOT NULL,
+        unit_price DECIMAL(12,2) NOT NULL,
+        subtotal DECIMAL(12,2) NOT NULL,
+        FOREIGN KEY (sale_id)
+          REFERENCES sales(id)
+          ON DELETE CASCADE,
+        FOREIGN KEY (product_id)
+          REFERENCES products(id)
+          ON DELETE SET NULL
+      )
+    `);
+
+    res.json({ success: true, message: "Database tables created" });
+  } catch (error) {
+    console.error("Database setup failed:", error.message);
+    res.status(500).json({ error: "Database setup failed" });
+  }
+});
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Great Wisdom API running on port ${PORT}`);
 });
