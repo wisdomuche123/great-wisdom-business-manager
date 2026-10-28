@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Great Wisdom Business Manager">
+  <title>Great Wisdom | Business Manager</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #172033;
+    }
+
+    header {
+      background: #101a35;
+      color: white;
+      padding: 22px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    header h1 {
+      font-size: 21px;
+    }
+
+    header span {
+      color: #8b9cff;
+    }
+
+    .badge {
+      background: #26365b;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+
+    main {
+      max-width: 1150px;
+      margin: 35px auto;
+      padding: 0 20px;
+    }
+
+    .welcome {
+      background: linear-gradient(120deg, #172554, #4338ca);
+      color: white;
+      border-radius: 18px;
+      padding: 32px;
+      margin-bottom: 25px;
+    }
+
+    .welcome p {
+      margin-top: 10px;
+      color: #dbeafe;
+      line-height: 1.7;
+    }
+
+    .section-title {
+      margin: 28px 0 15px;
+      font-size: 20px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      padding: 22px;
+      border-radius: 14px;
+      border: 1px solid #e5eaf3;
+      box-shadow: 0 5px 20px #17255408;
+    }
+
+    .card p {
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .card h2 {
+      margin-top: 13px;
+      font-size: 27px;
+    }
+
+    .card small {
+      display: block;
+      margin-top: 8px;
+      color: #64748b;
+    }
+
+    .modules {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .module h3 {
+      margin-bottom: 10px;
+    }
+
+    .module p {
+      color: #64748b;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .module a {
+      display: inline-block;
+      margin-top: 16px;
+      color: #4338ca;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .notice {
+      margin-top: 25px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #eef2ff;
+      color: #3730a3;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    @media (max-width: 500px) {
+      .welcome {
+        padding: 23px;
+      }
+
+      header h1 {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Great Wisdom <span>Business Manager</span></h1>
+    <div class="badge">PROJECT PREVIEW</div>
+  </header>
+
+  <main>
+    <section class="welcome">
+      <h2>Welcome to your business dashboard.</h2>
+      <p>
+        Manage customers, monitor inventory, track sales and understand
+        your business performance from one simple workspace.
+      </p>
+    </section>
+
+    <h2 class="section-title">Business Overview</h2>
+
+    <section class="stats">
+      <article class="card">
+        <p>Total Revenue</p>
+        <h2>₦0.00</h2>
+        <small>Connect sales data to calculate revenue.</small>
+      </article>
+
+      <article class="card">
+        <p>Total Customers</p>
+        <h2>0</h2>
+        <small>Your customer records will appear here.</small>
+      </article>
+
+      <article class="card">
+        <p>Products in Stock</p>
+        <h2>0</h2>
+        <small>Track your inventory in one place.</small>
+      </article>
+
+      <article class="card">
+        <p>Orders</p>
+        <h2>0</h2>
+        <small>Your recorded orders will appear here.</small>
+      </article>
+    </section>
+
+    <h2 class="section-title">Management Modules</h2>
+
+    <section class="modules">
+      <article class="card module">
+        <h3>👥 Customers</h3>
+        <p>Organize customer information and maintain business relationships.</p>
+        <a href="#customers">Explore module →</a>
+      </article>
+
+      <article class="card module">
+        <h3>📦 Inventory</h3>
+        <p>Prepare to manage products, stock quantities and product details.</p>
+        <a href="#inventory">Explore module →</a>
+      </article>
+
+      <article class="card module">
+        <h3>🧾 Sales & Orders</h3>
+        <p>Prepare to record orders and review sales transactions.</p>
+        <a href="#sales">Explore module →</a>
+      </article>
+
+      <article class="card module">
+        <h3>📊 Reports</h3>
+        <p>Build business reports using recorded sales and inventory data.</p>
+        <a href="#reports">Explore module →</a>
+      </article>
+    </section>
+
+    <div class="notice">
+      <strong>Development status:</strong>
+      This is the initial dashboard interface. The figures are placeholders;
+      customer management, inventory, sales, authentication and database
+      integration have not been implemented yet.
+    </div>
+  </main>
+
+  <footer>
+    Great Wisdom Business Manager · Built by Wisdom Uche Everest
+  </footer>
+</body>
+</html>
