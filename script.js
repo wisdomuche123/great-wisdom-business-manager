@@ -1,44 +1,7 @@
 // Great Wisdom Business Manager
-// Initial interactive customer module.
+// Customer management with browser persistence.
 
-const customers = [];
-
-function addCustomer(name, email) {
-  const customer = {
-    id: Date.now(),
-    name: name.trim(),
-    email: email.trim(),
-    createdAt: new Date().toISOString()
-  };
-
-  if (!customer.name || !customer.email) {
-    return {
-      success: false,
-      message: "Please enter the customer's name and email."
-    };
-  }
-
-  customers.push(customer);
-
-  return {
-    success: true,
-    message: "Customer added successfully!",
-    customer
-  };
-}
-
-function getCustomerCount() {
-  return customers.length;
-}
-
-function getAllCustomers() {
-  return [...customers];
-}
-
-console.log("Great Wisdom Business Manager loaded.");
-console.log("Customer module initialized.");
-
-const customers = [];
+const STORAGE_KEY = "gwBusinessCustomers";
 
 const customerForm = document.getElementById("customerForm");
 const customerName = document.getElementById("customerName");
@@ -46,35 +9,107 @@ const customerEmail = document.getElementById("customerEmail");
 const customerList = document.getElementById("customerList");
 const customerMessage = document.getElementById("customerMessage");
 
-customerForm.addEventListener("submit", function (event) {
+const customerCount = document.querySelector(
+  ".stats .card:nth-child(2) h2"
+);
+
+let customers = loadCustomers();
+
+function loadCustomers() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    const parsed = saved ? JSON.parse(saved) : [];
+
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.error("Could not load customer records:", error);
+    return [];
+  }
+}
+
+function saveCustomers() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(customers));
+    return true;
+  } catch (error) {
+    console.error("Could not save customer records:", error);
+    customerMessage.textContent =
+      "Could not save records in this browser.";
+    return false;
+  }
+}
+
+function renderCustomers() {
+  customerList.replaceChildren();
+
+  customers.forEach((customer) => {
+    const item = document.createElement("li");
+    item.style.marginBottom = "12px";
+
+    const details = document.createElement("span");
+    details.textContent = `${customer.name} — ${customer.email} `;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.textContent = "Delete";
+    deleteButton.style.marginLeft = "8px";
+    deleteButton.style.padding = "6px 10px";
+    deleteButton.style.cursor = "pointer";
+
+    deleteButton.addEventListener("click", () => {
+      const previousCustomers = customers;
+      customers = customers.filter(
+        (entry) => entry.id !== customer.id
+      );
+
+      if (saveCustomers()) {
+        renderCustomers();
+        customerMessage.textContent = "Customer deleted successfully.";
+      } else {
+        customers = previousCustomers;
+      }
+    });
+
+    item.append(details, deleteButton);
+    customerList.appendChild(item);
+  });
+
+  customerCount.textContent = customers.length;
+}
+
+customerForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const name = customerName.value.trim();
   const email = customerEmail.value.trim();
 
   if (!name || !email) {
-    customerMessage.textContent = "Please complete all fields.";
+    customerMessage.textContent =
+      "Please enter the customer's name and email.";
     return;
   }
 
   const customer = {
-    id: Date.now(),
-    name: name,
-    email: email
+    id: crypto.randomUUID
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random()}`,
+    name,
+    email,
+    createdAt: new Date().toISOString()
   };
 
   customers.push(customer);
 
-  const item = document.createElement("li");
-  item.textContent = `${customer.name} — ${customer.email}`;
-  customerList.appendChild(item);
+  if (!saveCustomers()) {
+    customers.pop();
+    return;
+  }
 
-  customerMessage.textContent = "Customer added successfully!";
-
-  document.querySelector(".stats .card:nth-child(2) h2").textContent =
-    customers.length;
-
+  renderCustomers();
   customerForm.reset();
+  customerMessage.textContent = "Customer saved successfully!";
 });
+
+renderCustomers();
 
 console.log("Great Wisdom Business Manager is ready.");
