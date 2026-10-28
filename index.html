@@ -230,6 +230,43 @@
     </div>
   </main>
 
+  <section id="customers" class="card" style="margin-top:25px">
+  <h2>Customer Management</h2>
+  <p style="margin:12px 0;color:#64748b">
+    Add a customer to your local dashboard.
+  </p>
+
+  <form id="customerForm">
+    <input
+      id="customerName"
+      type="text"
+      placeholder="Customer name"
+      required
+      style="padding:12px;width:100%;margin:8px 0"
+    >
+
+    <input
+      id="customerEmail"
+      type="email"
+      placeholder="Customer email"
+      required
+      style="padding:12px;width:100%;margin:8px 0"
+    >
+
+    <button
+      type="submit"
+      style="padding:12px 18px;background:#4338ca;color:white;border:0;border-radius:8px"
+    >
+      Add Customer
+    </button>
+  </form>
+
+  <p id="customerMessage" role="status" style="margin-top:12px"></p>
+  <ul id="customerList" style="margin:15px 0 0 20px"></ul>
+  </section>
+  
+<script src="script.js"></script>
+  
   <footer>
     Great Wisdom Business Manager · Built by Wisdom Uche Everest
   </footer>
